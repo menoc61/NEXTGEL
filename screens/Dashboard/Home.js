@@ -1,4 +1,4 @@
-import {IconButton,TextButton} from '../../components/';
+import {IconButton,LineDivider,TextButton, VerticalCourseCard} from '../../components/';
 import { View,Text,ImageBackground,Image,ScrollView } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import { COLORS,SIZES,FONTS,icons,images,dummyData } from "../../constants";
@@ -84,7 +84,14 @@ const Home = () => {
             keyExtractor={item => `Course_${item.id}`}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{marginTop: SIZES.padding}}
-            renderItem={({item,index}) => item}
+            renderItem={({item,index}) => (
+                <VerticalCourseCard 
+                containerStyle={{
+                    marginLeft: index == 0 ? SIZES.padding : SIZES.radius,
+                    marginRight: index == dummyData.courses_list_1.length - 1 ? SIZES.padding : 0,
+                }}
+                course={item}/>
+            )}
             />
         )
     }
@@ -107,6 +114,10 @@ const Home = () => {
                 {renderStartLearning()}
                 {/* List of cours section */}
                 {renderCourses()}
+
+                <LineDivider lineStyle={{
+                    marginVertical: SIZES.padding
+                }}/>
             </ScrollView>
         </View>
     )
