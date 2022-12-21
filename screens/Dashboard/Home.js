@@ -1,7 +1,30 @@
-import {IconButton,LineDivider,TextButton, VerticalCourseCard} from '../../components/';
+import {CategoryCard, IconButton,LineDivider,TextButton,HorizontalCourseCard, VerticalCourseCard} from '../../components/';
 import { View,Text,ImageBackground,Image,ScrollView } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import { COLORS,SIZES,FONTS,icons,images,dummyData } from "../../constants";
+
+const Section = ({containerStyle,title,onPress,children}) => {
+    return(
+        <View style={{...containerStyle}}>
+            <View style={{
+                flexDirection: "row",
+                paddingHorizontal: SIZES.padding
+                }}>
+                    <Text style={{...FONTS.h2, flex: 1}}>{title}</Text>
+                    <TextButton
+                    contentContainerStyle={{
+                        width: 80,
+                        borderRadius,
+                        backgroundColor: COLORS.primary 
+                    }}
+                    lable="See All"
+                    onPress={onPress}
+                    />
+            </View>
+            {children}
+        </View>
+    )
+}
 const Home = () => {
 
     function renderHeader() {
@@ -21,7 +44,7 @@ const Home = () => {
             </View>
             {/* Notification */}
             <IconButton
-            icon={icon.notification}
+            icon={icons.notification}
             iconStyle={{tintColor: COLORS.black}}
             />
         </View>
@@ -95,6 +118,60 @@ const Home = () => {
             />
         )
     }
+    
+    function renderCategories(){
+        return (
+            <Section title="Categories">
+                <FlatList
+                horizontal
+                data={dummyData.categories}
+                listKey="Categories"
+                keyExtractor={item => `Categories-${item.id}`}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{marginTop: SIZES.radius}}
+                renderItem={({item,index}) => (
+                    <CategoryCard 
+                    containerStyle={{
+                        marginLeft: index == 0 ? SIZES.padding : SIZES.radius,
+                        marginRight: index == dummyData.categories.length - 1 ? SIZES.padding : 0,
+                    }}
+                    category={item}/>
+                )}
+                />
+            </Section>
+        )
+    }
+
+    function renderPopularCourses(){
+        return(
+            <Section
+                title="Popular Courses"
+                containerStyle={{marginTop: 30}}
+            >
+            <FlatList
+                scrollEnabled={false}
+                data={dummyData.courses_list_2}
+                listKey="PopularCourses"
+                keyExtractor={item => `PopularCourses-${item.id}`}
+                contentContainerStyle={{marginTop: SIZES.radius, paddingHorizontal: SIZES.padding}}
+                renderItem={({item,index}) => (
+                    <HorizontalCourseCard 
+                    containerStyle={{
+                        marginVertical: SIZES.padding,
+                        marginTop: index == 0 ? SIZES.radius: SIZES.padding,
+                    }}
+                    course={item}/>
+                )}
+                ItemSeparatorComponent={() => (
+                    <LineDivider
+                     lineStyle={{
+                        backgroundColor: COLORS.gray20
+                     }}/>
+                )}
+            />
+            </Section>
+        )
+    }
     return (
         <View
         style={{
@@ -118,6 +195,11 @@ const Home = () => {
                 <LineDivider lineStyle={{
                     marginVertical: SIZES.padding
                 }}/>
+
+                {/* Category Section */}
+                {renderCategories()}
+                {/* Polular course Section */}
+                {renderPopularCourses()}
             </ScrollView>
         </View>
     )
