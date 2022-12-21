@@ -9,7 +9,7 @@ const VerticalCourseCard = ({containerStyle, course}) => {
             ...containerStyle
         }}>
             {/* Thumbnail */}
-            <Image source={images.thumbnail}
+            <Image source={images.thumbnail_1}
             resizeMode="cover"
             style={{
                 width: "100%",
